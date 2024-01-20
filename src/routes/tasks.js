@@ -1,28 +1,33 @@
 const { Router } = require('express');
 const fs = require('fs')
 
-const allTasks = [
-    {
-        "id": "1",
-        "name": "Task 1",
-        "description": "Description of Task 1"
-    },
-    {
-        "id": "2",
-        "name": "Task 2",
-        "description": "Description of Task 2"
-    },
-    {
-        "id": "3",
-        "name": "Task 3",
-        "description": "Description of Task 3"
-    },
-    {
-        "id": "4",
-        "name": "Task 4",
-        "description": "Description of Task 4"
-    }
-]
+let data = fs.readFileSync('./src/routes/tasks.json');
+
+let allTasks = JSON.parse(data);
+
+// const allTasks = [
+//     {
+//         "id": "1",
+//         "name": "Task 1",
+//         "description": "Description of Task 1"
+//     },
+//     {
+//         "id": "2",
+//         "name": "Task 2",
+//         "description": "Description of Task 2"
+//     },
+//     {
+//         "id": "3",
+//         "name": "Task 3",
+//         "description": "Description of Task 3"
+//     },
+//     {
+//         "id": "4",
+//         "name": "Task 4",
+//         "description": "Description of Task 4"
+//     }
+// ]
+
 const task = Router();
 
 //Get Tasks
@@ -32,19 +37,32 @@ task.get('/', (req, res) => {
 
 //Create Task
 task.post('/', (req, res) => {
-    const newTask = {
+    let newTask = {
+        id: allTasks.length + 1,
         name: req.body.name,
-        description: req.body.description,
+        description: req.body.description
     }
     allTasks.push(newTask)
+    fs.writeFile('./src/routes/tasks.json', JSON.stringify(allTasks), (err) => {
+        if (err) throw err;
+        console.log(allTasks)
+        console.log(newTask)
+        console.log('The file has been saved!');
+    });
     res.json(allTasks)
 })
 
 //Delete Task
 task.delete('/:id', (req, res) => {
-    const id = req.params.id
-    const index = allTasks.findIndex(task => task.id === id)
-    allTasks.splice(index, 1)
+    const id = Number(req.params.id)
+    const index = allTasks.findIndex(task => task.id === id);
+    if (index !== -1)
+        allTasks.splice(index, 1)
+    fs.writeFile('./src/routes/tasks.json', JSON.stringify(allTasks), (err) => {
+        if (err) throw err;
+        console.log(allTasks)
+        console.log('The file has been saved!');
+    });
     res.json(allTasks)
 })
 
