@@ -40,7 +40,6 @@ router.get('/', (req, res) => {
         res.send(marketist);
     }
     console.log(req.query)
-    res.send(marketist);
 })
 
 module.exports = router;
