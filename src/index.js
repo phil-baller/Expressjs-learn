@@ -1,8 +1,6 @@
 const express = require('express')
 const cors = require('cors')
 
-
-
 const groceriesRouter = require('./routes/groceries');
 const marketRouter = require('./routes/markets');
 const taskRouter = require('./routes/tasks');

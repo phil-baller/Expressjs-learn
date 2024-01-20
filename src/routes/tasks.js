@@ -5,29 +5,6 @@ let data = fs.readFileSync('./src/routes/tasks.json');
 
 let allTasks = JSON.parse(data);
 
-// const allTasks = [
-//     {
-//         "id": "1",
-//         "name": "Task 1",
-//         "description": "Description of Task 1"
-//     },
-//     {
-//         "id": "2",
-//         "name": "Task 2",
-//         "description": "Description of Task 2"
-//     },
-//     {
-//         "id": "3",
-//         "name": "Task 3",
-//         "description": "Description of Task 3"
-//     },
-//     {
-//         "id": "4",
-//         "name": "Task 4",
-//         "description": "Description of Task 4"
-//     }
-// ]
-
 const task = Router();
 
 //Get Tasks
@@ -60,7 +37,6 @@ task.delete('/:id', (req, res) => {
         allTasks.splice(index, 1)
     fs.writeFile('./src/routes/tasks.json', JSON.stringify(allTasks), (err) => {
         if (err) throw err;
-        console.log(allTasks)
         console.log('The file has been saved!');
     });
     res.json(allTasks)
